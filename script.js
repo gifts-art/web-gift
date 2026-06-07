@@ -464,7 +464,7 @@
     const img = item.querySelector('img');
     const caption = item.querySelector('.gallery__text');
 
-    lightboxImg.src = img.src.replace(/w=\d+/, 'w=1400');
+    lightboxImg.src = img.src.replace(/w=\d+/, 'w=1400').replace('w=800', 'w=1400');
     lightboxImg.alt = img.alt;
     lightboxCaption.textContent = caption?.textContent || '';
     lightbox.classList.add('active');
@@ -837,7 +837,6 @@
 
   function initScratch() {
     if (scratchInitialized) return;
-    scratchInitialized = true;
 
     const canvas = $('#scratchCanvas');
     const card = $('.scratch__card');
@@ -846,48 +845,73 @@
     const ctx = canvas.getContext('2d');
     let drawing = false;
     let cleared = false;
+    let layerDrawn = false;
+    let logicalW = 0;
+    let logicalH = 0;
 
-    function sizeCanvas() {
+    function drawScratchLayer() {
+      if (layerDrawn || cleared) return;
+
       const rect = card.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      if (rect.width < 10 || rect.height < 10) return;
 
-      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      const dpr = window.devicePixelRatio || 1;
+      logicalW = rect.width;
+      logicalH = rect.height;
+
+      canvas.width = Math.floor(logicalW * dpr);
+      canvas.height = Math.floor(logicalH * dpr);
+      canvas.style.width = `${logicalW}px`;
+      canvas.style.height = `${logicalH}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+
+      const grad = ctx.createLinearGradient(0, 0, logicalW, logicalH);
       grad.addColorStop(0, '#b8b8c8');
       grad.addColorStop(0.3, '#e8e8f0');
       grad.addColorStop(0.5, '#c0c0d0');
       grad.addColorStop(0.7, '#d8d8e8');
       grad.addColorStop(1, '#a8a8b8');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, logicalW, logicalH);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.font = 'bold 14px Outfit, sans-serif';
+      ctx.fillStyle = 'rgba(80, 80, 100, 0.45)';
+      ctx.font = 'bold 15px Outfit, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('ИЗТРИЙ ТУК', canvas.width / 2, canvas.height / 2);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('ИЗТРИЙ ТУК', logicalW / 2, logicalH / 2);
+
+      layerDrawn = true;
+      scratchInitialized = true;
     }
 
     let scratchChecks = 0;
 
     function scratch(x, y) {
-      if (cleared) return;
+      if (cleared || !layerDrawn) return;
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
-      ctx.arc(x, y, 22, 0, Math.PI * 2);
+      ctx.arc(x, y, 26, 0, Math.PI * 2);
       ctx.fill();
 
       scratchChecks++;
-      if (scratchChecks % 8 === 0) checkReveal();
+      if (scratchChecks % 6 === 0) checkReveal();
     }
 
     function checkReveal() {
+      if (cleared) return;
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const step = 16;
       let transparent = 0;
-      for (let i = 3; i < imageData.data.length; i += 4) {
+      let total = 0;
+
+      for (let i = 3; i < imageData.data.length; i += 4 * step) {
+        total++;
         if (imageData.data[i] < 128) transparent++;
       }
-      const pct = transparent / (canvas.width * canvas.height);
-      if (pct > 0.45) {
+
+      if (transparent / total > 0.45) {
         cleared = true;
         card.classList.add('revealed');
       }
@@ -895,21 +919,24 @@
 
     function getPos(e) {
       const rect = canvas.getBoundingClientRect();
-      const touch = e.touches?.[0];
-      const cx = touch ? touch.clientX : e.clientX;
-      const cy = touch ? touch.clientY : e.clientY;
-      return { x: cx - rect.left, y: cy - rect.top };
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
     }
 
     canvas.addEventListener('pointerdown', e => {
+      if (!layerDrawn) drawScratchLayer();
+      if (cleared) return;
+      e.preventDefault();
       drawing = true;
       canvas.setPointerCapture(e.pointerId);
-      const p = getPos(e);
-      scratch(p.x, p.y);
+      scratch(getPos(e).x, getPos(e).y);
     });
 
     canvas.addEventListener('pointermove', e => {
-      if (!drawing) return;
+      if (!drawing || cleared) return;
+      e.preventDefault();
       const p = getPos(e);
       scratch(p.x, p.y);
     });
@@ -917,10 +944,16 @@
     canvas.addEventListener('pointerup', () => { drawing = false; });
     canvas.addEventListener('pointercancel', () => { drawing = false; });
 
-    sizeCanvas();
-    window.addEventListener('resize', () => {
-      if (!cleared) sizeCanvas();
-    });
+    const scratchObserver = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          drawScratchLayer();
+          scratchObserver.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    scratchObserver.observe(card);
   }
 
   /* ─── Envelope + Fullscreen Letter ─── */
