@@ -1971,7 +1971,7 @@ button {
 .letter-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9700;
+  z-index: 100010;
   display: flex;
   opacity: 0;
   visibility: hidden;
@@ -2048,7 +2048,7 @@ button {
   position: fixed;
   top: calc(12px + var(--safe-top));
   right: 16px;
-  z-index: 10;
+  z-index: 100015;
   width: 44px;
   height: 44px;
   display: flex;
@@ -2372,7 +2372,7 @@ button {
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 9500;
+  z-index: 100005;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -972,6 +972,11 @@
     function openLetter() {
       if (btn.classList.contains('open')) return;
 
+      navMenu?.classList.remove('open');
+      navToggle?.classList.remove('open');
+      navToggle?.setAttribute('aria-expanded', 'false');
+      setNavMenuOpen(false);
+
       btn.classList.add('open');
       btn.setAttribute('aria-expanded', 'true');
       wrap?.classList.add('is-opened');
