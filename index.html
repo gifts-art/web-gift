@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Персонализиран дигитален подарък — създаден с любов за теб.">
+  <meta name="theme-color" content="#0a0612">
+  <title>За Теб · Дигитален Подарък</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <div class="preloader__ring"></div>
+      <p class="preloader__text">Подготвяме нещо специално...</p>
+    </div>
+  </div>
+
+  <!-- Intro Gate -->
+  <div id="intro" class="intro" role="dialog" aria-label="Отвори подаръка">
+    <div class="intro__bg">
+      <div class="intro__orb intro__orb--1"></div>
+      <div class="intro__orb intro__orb--2"></div>
+      <div class="intro__orb intro__orb--3"></div>
+    </div>
+    <div class="intro__content">
+      <div class="intro__gift-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="28" width="48" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M32 28V60M8 36h48" stroke="currentColor" stroke-width="2"/>
+          <path d="M32 28c-8-12-20-8-12 0 8-8 20-4 12 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M32 28c8-12 20-8 12 0-8-8-20-4-12 0z" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <p class="intro__label">Дигитален подарък</p>
+      <h1 class="intro__title">Има нещо<br><em>само за теб</em></h1>
+      <p class="intro__subtitle">Докосни, за да отвориш</p>
+      <button id="openGift" class="intro__btn" type="button">
+        <span>Отвори подаръка</span>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="intro__particles" id="introParticles" aria-hidden="true"></div>
+  </div>
+
+  <!-- Main Experience -->
+  <main id="main" class="main hidden">
+
+    <!-- Ambient Background -->
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient__aurora"></div>
+      <div class="ambient__orb ambient__orb--1"></div>
+      <div class="ambient__orb ambient__orb--2"></div>
+      <div class="ambient__orb ambient__orb--3"></div>
+      <div class="ambient__orb ambient__orb--4"></div>
+      <div class="ambient__grain"></div>
+      <canvas id="ambientCanvas" class="ambient__canvas"></canvas>
+    </div>
+
+    <!-- Open Burst FX -->
+    <canvas id="openBurst" class="open-burst" aria-hidden="true"></canvas>
+
+    <!-- Floating Nav -->
+    <nav class="nav" aria-label="Навигация">
+      <a href="#hero" class="nav__logo">За Теб</a>
+      <button id="navToggle" class="nav__toggle" type="button" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <ul id="navMenu" class="nav__menu">
+        <li><a href="#memories">Спомени</a></li>
+        <li><a href="#timeline">История</a></li>
+        <li><a href="#playzone">Игри</a></li>
+        <li><a href="#letter">Писмо</a></li>
+        <li><a href="#surprise">Изненада</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero__cinema" aria-hidden="true">
+        <span class="hero__bar hero__bar--top"></span>
+        <span class="hero__bar hero__bar--bottom"></span>
+      </div>
+      <div class="hero__bg">
+        <img src="https://images.unsplash.com/photo-1516589178581-6ec7833048cb?w=1920&q=85" alt="" class="hero__bg-img" loading="eager">
+        <div class="hero__overlay"></div>
+        <div class="hero__mesh" aria-hidden="true"></div>
+        <div class="hero__shimmer" aria-hidden="true"></div>
+        <div class="hero__vignette" aria-hidden="true"></div>
+        <canvas id="heroSparkles" class="hero__sparkles" aria-hidden="true"></canvas>
+      </div>
+      <div class="hero__content">
+        <p class="hero__eyebrow reveal">
+          <span class="hero__eyebrow-dot"></span>
+          Създадено с любов
+        </p>
+        <h1 class="hero__title reveal">
+          <span class="hero__title-line">За най-</span>
+          <span class="hero__title-line hero__title-line--accent">специалния</span>
+          <span class="hero__title-line">човек</span>
+        </h1>
+        <div class="hero__name-wrap reveal">
+          <span class="hero__name-glow" aria-hidden="true"></span>
+          <p class="hero__name">Мария</p>
+        </div>
+        <p class="hero__message reveal">Всеки момент с теб е подарък.<br>Този е само за теб.</p>
+        <a href="#memories" class="hero__scroll reveal" aria-label="Продължи надолу">
+          <span>Разгледай</span>
+          <div class="hero__scroll-line"></div>
+        </a>
+      </div>
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__flare" aria-hidden="true"></div>
+    </section>
+
+    <!-- Stats Strip -->
+    <section class="stats" aria-label="Нашите числа">
+      <div class="stats__grid">
+        <article class="stats__item reveal">
+          <div class="stats__card">
+            <span class="stats__number" data-count="847">0</span>
+            <span class="stats__label">дни заедно</span>
+          </div>
+        </article>
+        <article class="stats__item reveal">
+          <div class="stats__card">
+            <span class="stats__number" data-count="12400">0</span>
+            <span class="stats__label">усмивки</span>
+          </div>
+        </article>
+        <article class="stats__item reveal">
+          <div class="stats__card">
+            <span class="stats__number" data-count="1">0</span>
+            <span class="stats__label">безкрайна любов</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Memories Gallery -->
+    <section id="memories" class="memories">
+      <header class="section-header reveal">
+        <span class="section-header__tag">Галерия</span>
+        <h2 class="section-header__title section-header__title--glow">Нашите <em>спомени</em></h2>
+        <p class="section-header__desc">Всяка снимка разказва история, която само ние познаваме.</p>
+        <div class="section-header__line" aria-hidden="true"></div>
+      </header>
+
+      <div class="gallery">
+        <figure class="gallery__item reveal" data-index="0" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1522673604730-d40e2a6a5e9d?w=800&q=80" alt="Залез заедно" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Лято 2024</span>
+            <span class="gallery__text">Залез, който никога няма да забравим</span>
+          </figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-index="1" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1516589178581-6ec7833048cb?w=800&q=80" alt="Прогулка в парка" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Пролет 2024</span>
+            <span class="gallery__text">Първата ни прогулка</span>
+          </figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-index="2" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=800&q=80" alt="Кафе и разговори" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Есен 2023</span>
+            <span class="gallery__text">Кафе и безкрайни разговори</span>
+          </figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-index="3" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&q=80" alt="Празненство" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Зима 2023</span>
+            <span class="gallery__text">Най-щастливата вечер</span>
+          </figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-index="4" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80" alt="Приятели и смях" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Лято 2023</span>
+            <span class="gallery__text">Смях до сълзи</span>
+          </figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-index="5" data-tilt>
+          <div class="gallery__shine" aria-hidden="true"></div>
+          <img src="https://images.unsplash.com/photo-1474557173912-6a41c27d7dcc?w=800&q=80" alt="Пътуване" loading="lazy">
+          <figcaption class="gallery__caption">
+            <span class="gallery__date">Есен 2022</span>
+            <span class="gallery__text">Нашето първо пътуване</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline" class="timeline">
+      <header class="section-header reveal">
+        <span class="section-header__tag">Хронология</span>
+        <h2 class="section-header__title section-header__title--glow">Нашата <em>история</em></h2>
+        <p class="section-header__desc">Всеки момент е връзка в веригата на нещата, които ни събраха.</p>
+      </header>
+
+      <div class="timeline__track">
+        <div class="timeline__line-glow" aria-hidden="true"></div>
+        <article class="timeline__event reveal">
+          <div class="timeline__marker"><div class="timeline__dot"></div></div>
+          <div class="timeline__card">
+            <time class="timeline__date" datetime="2022-03-14">14.03.2022</time>
+            <h3 class="timeline__heading">Първата среща</h3>
+            <p class="timeline__text">Никой не знаеше, че този ден ще промени всичко. Една усмивка, един разговор — и светът изглеждаше различно.</p>
+          </div>
+        </article>
+        <article class="timeline__event reveal">
+          <div class="timeline__marker"><div class="timeline__dot"></div></div>
+          <div class="timeline__card">
+            <time class="timeline__date" datetime="2022-06-21">21.06.2022</time>
+            <h3 class="timeline__heading">Първото пътуване</h3>
+            <p class="timeline__text">Море, слънце и безгрижие. Разбрахме, че заедно всяко място е по-красиво.</p>
+          </div>
+        </article>
+        <article class="timeline__event reveal">
+          <div class="timeline__marker"><div class="timeline__dot"></div></div>
+          <div class="timeline__card">
+            <time class="timeline__date" datetime="2023-02-14">14.02.2023</time>
+            <h3 class="timeline__heading">Годишнина</h3>
+            <p class="timeline__text">Една година изминала като миг. Празнувахме с тихи обещания и големи мечти.</p>
+          </div>
+        </article>
+        <article class="timeline__event reveal">
+          <div class="timeline__marker"><div class="timeline__dot"></div></div>
+          <div class="timeline__card">
+            <time class="timeline__date" datetime="2024-01-01">01.01.2024</time>
+            <h3 class="timeline__heading">Нова година, същата любов</h3>
+            <p class="timeline__text">В полунощ те погледнах и разбрах — искам още хиляди такива моменти с теб.</p>
+          </div>
+        </article>
+        <article class="timeline__event reveal">
+          <div class="timeline__marker"><div class="timeline__dot"></div></div>
+          <div class="timeline__card">
+            <time class="timeline__date" datetime="2025-06-07">Днес</time>
+            <h3 class="timeline__heading">Този подарък</h3>
+            <p class="timeline__text">Защото заслужаваш да знаеш колко много значиш. Сега и винаги.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Play Zone -->
+    <section id="playzone" class="playzone">
+      <header class="section-header reveal">
+        <span class="section-header__tag">Интерактивно</span>
+        <h2 class="section-header__title section-header__title--glow">Малки <em>игри</em> за теб</h2>
+        <p class="section-header__desc">Забавление, изненади и малки тайни — само за теб.</p>
+        <div class="section-header__line" aria-hidden="true"></div>
+      </header>
+
+      <!-- Quiz -->
+      <div id="quiz" class="game-panel reveal">
+        <div class="game-panel__head">
+          <span class="game-panel__icon">💬</span>
+          <div>
+            <h3 class="game-panel__title">Колко ме познаваш?</h3>
+            <p class="game-panel__sub">5 примерни въпроса за нас</p>
+          </div>
+        </div>
+        <div id="quizBody" class="quiz">
+          <div class="quiz__progress">
+            <span id="quizProgress">1 / 5</span>
+            <div class="quiz__bar"><div id="quizBar" class="quiz__bar-fill"></div></div>
+          </div>
+          <p id="quizQuestion" class="quiz__question"></p>
+          <div id="quizOptions" class="quiz__options"></div>
+        </div>
+        <div id="quizResult" class="quiz__result is-collapsed">
+          <p class="quiz__score" id="quizScore"></p>
+          <p class="quiz__msg" id="quizMsg"></p>
+          <button type="button" id="quizRetry" class="game-btn">Играй отново</button>
+        </div>
+      </div>
+
+      <!-- Catch Hearts -->
+      <div id="catchgame" class="game-panel reveal">
+        <div class="game-panel__head">
+          <span class="game-panel__icon">🎯</span>
+          <div>
+            <h3 class="game-panel__title">Хвани сърцата</h3>
+            <p class="game-panel__sub">Докосни падащите сърца за 20 секунди</p>
+          </div>
+        </div>
+        <div class="catch">
+          <div class="catch__hud">
+            <span>Точки: <strong id="catchScore">0</strong></span>
+            <span>Време: <strong id="catchTime">20</strong>s</span>
+          </div>
+          <div id="catchArena" class="catch__arena" tabindex="0" role="application" aria-label="Хвани сърцата игра">
+            <p id="catchHint" class="catch__hint">Натисни „Старт" и хвани сърцата!</p>
+          </div>
+          <button type="button" id="catchStart" class="game-btn">Старт</button>
+          <p id="catchEnd" class="catch__end is-collapsed"></p>
+        </div>
+      </div>
+
+      <!-- Scratch Card -->
+      <div id="scratch" class="game-panel reveal">
+        <div class="game-panel__head">
+          <span class="game-panel__icon">✨</span>
+          <div>
+            <h3 class="game-panel__title">Изтрий и открий</h3>
+            <p class="game-panel__sub">Скрита изненада под слоя</p>
+          </div>
+        </div>
+        <div class="scratch">
+          <div class="scratch__card">
+            <div class="scratch__prize">
+              <span class="scratch__prize-label">Тайният подарък</span>
+              <p class="scratch__prize-text">Уикенд на море<br>само за нас двамата 🌊</p>
+              <span class="scratch__prize-from">— Алекс</span>
+            </div>
+            <canvas id="scratchCanvas" class="scratch__canvas" aria-label="Изтрий с пръст или мишка"></canvas>
+            <p class="scratch__hint">👆 Изтрий с пръст, за да видиш изненадата</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Letter Envelope -->
+    <section id="letter" class="letter">
+      <header class="section-header reveal">
+        <span class="section-header__tag">Последно писмо</span>
+        <h2 class="section-header__title section-header__title--glow">Нещо <em>специално</em></h2>
+        <p class="section-header__desc">Отвори плика и прочети съобщението.</p>
+      </header>
+
+      <div class="envelope-wrap reveal">
+        <div class="envelope-stage">
+          <div class="envelope-stage__glow" aria-hidden="true"></div>
+          <button id="envelopeBtn" class="envelope" type="button" aria-label="Отвори плика" aria-expanded="false">
+            <div class="envelope__shadow" aria-hidden="true"></div>
+            <div class="envelope__back" aria-hidden="true">
+              <span class="envelope__trim" aria-hidden="true"></span>
+            </div>
+            <div class="envelope__peek" aria-hidden="true"></div>
+            <div class="envelope__front" aria-hidden="true"></div>
+            <div class="envelope__flap" aria-hidden="true"></div>
+            <div class="envelope__seal" aria-hidden="true">
+              <span class="envelope__seal-heart">♥</span>
+              <small>Докосни</small>
+            </div>
+            <span class="envelope__ribbon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="envelope__cta" id="envelopeCta">
+          <span class="envelope__cta-pulse" aria-hidden="true"></span>
+          Докосни плика, за да прочетеш писмото
+        </p>
+      </div>
+    </section>
+
+    <!-- Surprise -->
+    <section id="surprise" class="surprise">
+      <div class="surprise__inner reveal">
+        <div class="surprise__visual">
+          <div class="surprise__stage" aria-hidden="true">
+            <div class="surprise__rings">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="surprise__heart-pulse">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <h2 class="surprise__title surprise__title--glow">Ти си моето<br><em>най-голямо чудо</em></h2>
+        <p class="surprise__text">Натисни сърцето и виж нещо специално</p>
+        <button id="surpriseBtn" class="surprise__btn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span>Обичам те</span>
+        </button>
+      </div>
+      <canvas id="confetti" class="confetti-canvas" aria-hidden="true"></canvas>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer__text">Създадено с ♥ като дигитален подарък</p>
+      <p class="footer__brand">WebGift</p>
+    </footer>
+
+  </main>
+
+  <!-- Fullscreen Letter -->
+  <div id="letterOverlay" class="letter-overlay" role="dialog" aria-label="Писмо" aria-hidden="true">
+    <div class="letter-overlay__bg" aria-hidden="true"></div>
+    <article class="letter-overlay__paper">
+      <button class="letter-overlay__close" type="button" aria-label="Затвори писмото">&times;</button>
+      <div class="letter-overlay__frame" aria-hidden="true"></div>
+      <header class="letter-overlay__header">
+        <span class="letter-overlay__tag">Лично писмо</span>
+        <div class="letter-overlay__ornament" aria-hidden="true">♥</div>
+      </header>
+      <p class="letter-overlay__greeting">Скъпа Мария,</p>
+      <div class="letter-overlay__body">
+        <p>Написах това писмо с мисъл за всеки момент, в който си била до мен. За всяка усмивка, за всяка тиха вечер, за всяко „обичам те", което казахме без думи.</p>
+        <p>Ти си моето най-красиво приключение. Не перфектно — истинско. И точно затова те обичам.</p>
+        <p>Този подарък е мой жест към теб — дигитален, но сърдечен. За да пазиш нашите спомени там, където винаги можеш да ги отвориш.</p>
+        <p>Благодаря ти, че си част от моя свят. С теб всичко е по-светло, по-топло и по-истинско.</p>
+      </div>
+      <footer class="letter-overlay__footer">
+        <p class="letter-overlay__sign">Завинаги твой,</p>
+        <p class="letter-overlay__name">Алекс</p>
+        <span class="letter-overlay__divider" aria-hidden="true"></span>
+      </footer>
+    </article>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-label="Галерия" aria-hidden="true">
+    <button class="lightbox__close" type="button" aria-label="Затвори">&times;</button>
+    <button class="lightbox__prev" type="button" aria-label="Предишна">&#8249;</button>
+    <button class="lightbox__next" type="button" aria-label="Следваща">&#8250;</button>
+    <div class="lightbox__content">
+      <img id="lightboxImg" src="" alt="">
+      <p id="lightboxCaption" class="lightbox__caption"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
