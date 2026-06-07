@@ -294,7 +294,12 @@
   const intro = $('#intro');
   const main = $('#main');
   const openBtn = $('#openGift');
-  const nav = $('.nav');
+  const nav = $('#siteNav');
+
+  function setNavMenuOpen(open) {
+    nav?.classList.toggle('menu-open', open);
+    if (giftOpened) document.body.style.overflow = open ? 'hidden' : '';
+  }
 
   function openGift() {
     if (giftOpened) return;
@@ -337,7 +342,7 @@
     const open = navMenu.classList.toggle('open');
     navToggle.classList.toggle('open', open);
     navToggle.setAttribute('aria-expanded', open);
-    if (giftOpened) document.body.style.overflow = open ? 'hidden' : '';
+    setNavMenuOpen(open);
   });
 
   $$('.nav__menu a').forEach(link => {
@@ -345,7 +350,7 @@
       navMenu?.classList.remove('open');
       navToggle?.classList.remove('open');
       navToggle?.setAttribute('aria-expanded', 'false');
-      if (giftOpened) document.body.style.overflow = '';
+      setNavMenuOpen(false);
     });
   });
 
@@ -464,7 +469,7 @@
     const img = item.querySelector('img');
     const caption = item.querySelector('.gallery__text');
 
-    lightboxImg.src = img.src.replace(/w=\d+/, 'w=1400').replace('w=800', 'w=1400');
+    lightboxImg.src = img.currentSrc || img.src;
     lightboxImg.alt = img.alt;
     lightboxCaption.textContent = caption?.textContent || '';
     lightbox.classList.add('active');

@@ -50,6 +50,23 @@
     <div class="intro__particles" id="introParticles" aria-hidden="true"></div>
   </div>
 
+  <!-- Floating Nav (outside main for correct mobile overlay stacking) -->
+  <nav class="nav" id="siteNav" aria-label="Навигация">
+    <div class="nav__bar">
+      <a href="#hero" class="nav__logo">За Теб</a>
+      <button id="navToggle" class="nav__toggle" type="button" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <ul id="navMenu" class="nav__menu">
+        <li><a href="#memories">Спомени</a></li>
+        <li><a href="#timeline">История</a></li>
+        <li><a href="#playzone">Игри</a></li>
+        <li><a href="#letter">Писмо</a></li>
+        <li><a href="#surprise">Изненада</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- Main Experience -->
   <main id="main" class="main hidden">
 
@@ -67,21 +84,6 @@
     <!-- Open Burst FX -->
     <canvas id="openBurst" class="open-burst" aria-hidden="true"></canvas>
 
-    <!-- Floating Nav -->
-    <nav class="nav" aria-label="Навигация">
-      <a href="#hero" class="nav__logo">За Теб</a>
-      <button id="navToggle" class="nav__toggle" type="button" aria-label="Меню" aria-expanded="false">
-        <span></span><span></span>
-      </button>
-      <ul id="navMenu" class="nav__menu">
-        <li><a href="#memories">Спомени</a></li>
-        <li><a href="#timeline">История</a></li>
-        <li><a href="#playzone">Игри</a></li>
-        <li><a href="#letter">Писмо</a></li>
-        <li><a href="#surprise">Изненада</a></li>
-      </ul>
-    </nav>
-
     <!-- Hero -->
     <section id="hero" class="hero">
       <div class="hero__cinema" aria-hidden="true">
@@ -89,7 +91,6 @@
         <span class="hero__bar hero__bar--bottom"></span>
       </div>
       <div class="hero__bg">
-        <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="" class="hero__bg-img" loading="eager">
         <div class="hero__overlay"></div>
         <div class="hero__mesh" aria-hidden="true"></div>
         <div class="hero__shimmer" aria-hidden="true"></div>
@@ -156,47 +157,47 @@
       <div class="gallery">
         <figure class="gallery__item reveal" data-index="0" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Залез заедно" loading="lazy">
+          <img src="images/memory-1.png" alt="Заедно на скала над морето" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Лято 2024</span>
-            <span class="gallery__text">Залез, който никога няма да забравим</span>
+            <span class="gallery__text">Ръка в ръка над безкрайното море</span>
           </figcaption>
         </figure>
         <figure class="gallery__item reveal" data-index="1" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Прогулка в парка" loading="lazy">
+          <img src="images/memory-2.png" alt="Поглед към хоризонта заедно" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Пролет 2024</span>
-            <span class="gallery__text">Първата ни прогулка</span>
+            <span class="gallery__text">На ръба на света, само ние двамата</span>
           </figcaption>
         </figure>
         <figure class="gallery__item reveal" data-index="2" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/3775143/pexels-photo-3775143.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Заедно на почивка" loading="lazy">
+          <img src="images/memory-3.png" alt="На пристанището заедно" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Есен 2023</span>
-            <span class="gallery__text">Нашият уютен момент</span>
+            <span class="gallery__text">Тихи моменти край морето</span>
           </figcaption>
         </figure>
         <figure class="gallery__item reveal" data-index="3" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=800" alt="В полето заедно" loading="lazy">
+          <img src="images/memory-4.png" alt="Силуети край водата" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Зима 2023</span>
-            <span class="gallery__text">Най-щастливата вечер</span>
+            <span class="gallery__text">Само ние и безкрайното небе</span>
           </figcaption>
         </figure>
         <figure class="gallery__item reveal" data-index="4" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/3764646/pexels-photo-3764646.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Щастливи заедно" loading="lazy">
+          <img src="images/memory-5.png" alt="Целувка на залез" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Лято 2023</span>
-            <span class="gallery__text">Смях до сълзи</span>
+            <span class="gallery__text">Залез, който пазим в сърцето</span>
           </figcaption>
         </figure>
         <figure class="gallery__item reveal" data-index="5" data-tilt>
           <div class="gallery__shine" aria-hidden="true"></div>
-          <img src="https://images.pexels.com/photos/951213/pexels-photo-951213.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ръка в ръка" loading="lazy">
+          <img src="images/memory-6.png" alt="На плажа при залез" loading="lazy">
           <figcaption class="gallery__caption">
             <span class="gallery__date">Есен 2022</span>
             <span class="gallery__text">Нашето първо пътуване</span>

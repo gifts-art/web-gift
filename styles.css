@@ -435,7 +435,13 @@ button {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9600;
+  z-index: 99990;
+  pointer-events: none;
+}
+
+.nav__bar {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -444,20 +450,33 @@ button {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 77, 141, 0.22);
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% - var(--safe-top)));
   opacity: 0;
-  transition: transform 0.5s var(--ease-out), opacity 0.5s;
+  transition: transform 0.5s var(--ease-out), opacity 0.5s, background 0.35s, border-color 0.35s;
+  pointer-events: auto;
 }
 
-.nav.visible {
+.nav.visible .nav__bar {
   transform: translateY(0);
   opacity: 1;
   box-shadow: 0 4px 30px rgba(255, 77, 141, 0.15);
 }
 
+.nav.menu-open {
+  z-index: 99995;
+  pointer-events: auto;
+}
+
+.nav.menu-open .nav__bar {
+  background: rgba(10, 6, 18, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: rgba(255, 77, 141, 0.12);
+}
+
 .nav__logo {
   position: relative;
-  z-index: 12;
+  z-index: 4;
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
@@ -467,7 +486,7 @@ button {
 
 .nav__toggle {
   position: relative;
-  z-index: 12;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -502,56 +521,92 @@ button {
 .nav__menu {
   position: fixed;
   inset: 0;
-  z-index: 11;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-start;
-  gap: 2px;
+  justify-content: center;
+  gap: 6px;
   margin: 0;
-  padding: calc(var(--nav-height) + var(--safe-top) + 20px) 20px calc(28px + var(--safe-bottom));
-  background: rgba(10, 6, 18, 0.98);
+  padding: calc(var(--nav-height) + var(--safe-top) + 32px) 28px calc(32px + var(--safe-bottom));
   list-style: none;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255, 77, 141, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 80% 100%, rgba(176, 106, 255, 0.12), transparent 50%),
+    rgba(8, 5, 14, 0.98);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  transition: opacity 0.35s, visibility 0.35s;
+  transform: scale(1.02);
+  transition: opacity 0.35s, visibility 0.35s, transform 0.4s var(--ease-out);
 }
 
 .nav__menu.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: scale(1);
 }
 
 .nav__menu li {
   flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
+
+.nav__menu.open li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav__menu.open li:nth-child(1) { transition-delay: 0.05s; }
+.nav__menu.open li:nth-child(2) { transition-delay: 0.1s; }
+.nav__menu.open li:nth-child(3) { transition-delay: 0.15s; }
+.nav__menu.open li:nth-child(4) { transition-delay: 0.2s; }
+.nav__menu.open li:nth-child(5) { transition-delay: 0.25s; }
 
 .nav__menu a {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.45rem, 5.2vw, 2rem);
-  padding: 14px 20px;
-  color: var(--text-muted);
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  padding: 16px 20px;
+  color: var(--text);
   text-align: center;
-  border-radius: 12px;
-  transition: color 0.3s, background 0.3s;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  transition: color 0.3s, background 0.3s, border-color 0.3s, transform 0.3s;
 }
 
 .nav__menu a:hover,
 .nav__menu a:focus,
 .nav__menu a.active {
   color: var(--accent-hot);
-  background: rgba(255, 77, 141, 0.08);
+  background: rgba(255, 77, 141, 0.1);
+  border-color: rgba(255, 77, 141, 0.2);
+  transform: translateX(4px);
 }
 
 @media (min-width: 768px) {
   .nav {
+    pointer-events: auto;
+  }
+
+  .nav__bar {
+    transform: translateY(calc(-100% - var(--safe-top)));
     padding: calc(12px + var(--safe-top)) 24px 12px;
+    background: rgba(10, 6, 18, 0.78);
+    border-bottom-color: var(--border);
+  }
+
+  .nav.visible .nav__bar {
+    transform: translateY(0);
+  }
+
+  .nav.menu-open .nav__bar {
     background: rgba(10, 6, 18, 0.78);
     border-bottom-color: var(--border);
   }
@@ -578,6 +633,14 @@ button {
     pointer-events: auto;
     overflow: visible;
     gap: 4px;
+    transform: none;
+    transition: none;
+  }
+
+  .nav__menu li {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .nav__menu a {
@@ -589,6 +652,9 @@ button {
     padding: 8px 16px;
     border-radius: 100px;
     text-align: center;
+    color: var(--text-muted);
+    border: none;
+    transform: none;
     transition: background 0.3s, color 0.3s;
   }
 
@@ -597,6 +663,7 @@ button {
   .nav__menu a.active {
     background: rgba(255, 255, 255, 0.06);
     color: var(--text);
+    transform: none;
   }
 }
 
@@ -607,7 +674,8 @@ button {
   min-height: 100svh;
   min-height: 100dvh;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
@@ -637,26 +705,11 @@ button {
 .hero__bg {
   position: absolute;
   inset: 0;
-}
-
-.hero__bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.25);
-  filter: saturate(1.25) contrast(1.05);
-  transition: transform 1.4s var(--ease-out), filter 1.4s;
-  will-change: transform;
-}
-
-.hero.in-view .hero__bg-img {
-  transform: scale(1.06) translateY(var(--hero-parallax, 0px));
-  animation: kenBurns 18s ease-in-out infinite alternate;
-}
-
-@keyframes kenBurns {
-  0% { transform: scale(1.06) translateY(var(--hero-parallax, 0px)) translate(0, 0); }
-  100% { transform: scale(1.14) translateY(var(--hero-parallax, 0px)) translate(-2%, -1.5%); }
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 15%, rgba(255, 77, 141, 0.22), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 85% 85%, rgba(176, 106, 255, 0.18), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 70%, rgba(232, 184, 122, 0.1), transparent 50%),
+    linear-gradient(180deg, #120a1e 0%, #0a0612 45%, #06040c 100%);
 }
 
 .hero__overlay {
@@ -664,12 +717,11 @@ button {
   inset: 0;
   background:
     linear-gradient(180deg,
-      rgba(6, 4, 12, 0.7) 0%,
-      rgba(6, 4, 12, 0.2) 30%,
-      rgba(6, 4, 12, 0.35) 55%,
-      rgba(6, 4, 12, 0.85) 80%,
+      rgba(6, 4, 12, 0.35) 0%,
+      rgba(6, 4, 12, 0.1) 40%,
+      rgba(6, 4, 12, 0.25) 70%,
       var(--bg-deep) 100%),
-    linear-gradient(135deg, rgba(255, 77, 141, 0.15) 0%, transparent 50%, rgba(176, 106, 255, 0.12) 100%);
+    linear-gradient(135deg, rgba(255, 77, 141, 0.12) 0%, transparent 50%, rgba(176, 106, 255, 0.1) 100%);
 }
 
 .hero__mesh {
