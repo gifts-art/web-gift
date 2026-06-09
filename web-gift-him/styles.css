@@ -536,6 +536,11 @@ button {
   pointer-events: none;
 }
 
+.nav:not(.visible) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .nav__bar {
   position: relative;
   z-index: 3;
@@ -554,6 +559,7 @@ button {
 }
 
 .nav.visible {
+  visibility: visible;
   pointer-events: auto;
 }
 
@@ -751,13 +757,19 @@ button {
     margin: 0;
     padding: 0;
     background: none;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     overflow: visible;
     gap: 4px;
     transform: none;
-    transition: none;
+    transition: opacity 0.5s var(--ease-out), visibility 0.5s;
+  }
+
+  .nav.visible .nav__menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .nav__menu li {
@@ -2789,28 +2801,81 @@ button {
     overscroll-behavior-y: none;
   }
 
+  .ambient,
   .ambient__canvas,
-  .hero__sparkles {
+  .ambient__aurora,
+  .ambient__orb,
+  .ambient__grain,
+  .hero__sparkles,
+  .hero__mesh,
+  .hero__shimmer,
+  .hero__flare,
+  .hero__name-glow,
+  .hero__glow,
+  .gallery__shine {
     display: none !important;
   }
 
-  .ambient__aurora {
-    animation: none;
-    opacity: 0.65;
+  .intro__orb,
+  .intro__particle {
+    display: none !important;
   }
 
-  .ambient__orb {
-    mix-blend-mode: normal;
-    filter: blur(48px);
-    opacity: 0.45;
+  .intro__brand-mark {
+    animation: none !important;
+  }
+
+  .intro__brand-mark .bmw-logo {
+    animation: none !important;
+  }
+
+  .hero__bar,
+  .hero__scroll-line,
+  .hero__eyebrow-dot,
+  .together__live-dot,
+  .envelope,
+  .envelope-stage__glow,
+  .envelope__seal,
+  .surprise__rings span,
+  .surprise__heart-pulse,
+  .surprise__stage,
+  .surprise__btn,
+  .envelope__cta-pulse {
+    animation: none !important;
+  }
+
+  .hero__title-line--accent {
+    animation: none !important;
+    background-size: 100% 100%;
+  }
+
+  .together,
+  .stats,
+  .memories,
+  .timeline,
+  .playzone,
+  .letter,
+  .surprise {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  .main {
+    contain: layout style;
   }
 
   .nav__bar,
   .stats__card,
   .game-panel,
-  .hero__eyebrow {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .hero__eyebrow,
+  .footer,
+  .timeline__card,
+  .together__panel,
+  .nav__menu,
+  .letter-overlay__bg,
+  .lightbox {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .nav__bar {
@@ -2825,18 +2890,45 @@ button {
     background: rgba(10, 12, 16, 0.94);
   }
 
-  .reveal {
-    transform: none;
-    transition: opacity 0.6s var(--ease-out);
+  .footer {
+    background: rgba(0, 0, 0, 0.96);
   }
 
-  .reveal.visible {
-    transform: none;
+  .timeline__card {
+    background: rgba(10, 12, 16, 0.94);
   }
 
-  .gallery__item {
+  .together__panel {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .reveal,
+  .timeline__event {
+    transform: none !important;
+    transition: opacity 0.45s var(--ease-out) !important;
+    will-change: auto;
+  }
+
+  .reveal.visible,
+  .timeline__event.visible {
+    transform: none !important;
+  }
+
+  .gallery__item,
+  .gallery__item.visible {
+    transform: none !important;
     transform-style: flat;
-    transition: box-shadow 0.4s, border-color 0.4s;
+    transition: box-shadow 0.35s, border-color 0.35s;
+    will-change: auto;
+  }
+
+  .gallery__item.visible .gallery__shine {
+    display: none;
+  }
+
+  .timeline__line-glow {
+    transform: none !important;
+    opacity: 0.35;
   }
 }
 

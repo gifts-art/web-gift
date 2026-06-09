@@ -121,13 +121,50 @@
       <div class="hero__flare" aria-hidden="true"></div>
     </section>
 
+    <!-- Together Live Counter -->
+    <section class="together" id="together" aria-label="Време заедно" data-since="2022-03-14T00:00:00">
+      <div class="together__panel reveal">
+        <div class="together__glow" aria-hidden="true"></div>
+        <header class="together__head">
+          <span class="together__live">
+            <span class="together__live-dot" aria-hidden="true"></span>
+            Live
+          </span>
+          <p class="together__title">Заедно от</p>
+          <time class="together__since" id="togetherSince" datetime="2022-03-14">14.03.2022</time>
+        </header>
+        <div class="together__grid" role="group" aria-label="Отброяване на време заедно">
+          <div class="together__unit">
+            <span class="together__value" id="togetherDays" data-unit="days">000</span>
+            <span class="together__label">дни</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherHours" data-unit="hours">00</span>
+            <span class="together__label">часа</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherMinutes" data-unit="minutes">00</span>
+            <span class="together__label">минути</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherSeconds" data-unit="seconds">00</span>
+            <span class="together__label">секунди</span>
+          </div>
+        </div>
+        <p class="together__sub">Всяка секунда с теб е магия.</p>
+      </div>
+    </section>
+
     <!-- Stats Strip -->
     <section class="stats" aria-label="Нашите числа">
       <div class="stats__grid">
         <article class="stats__item reveal">
           <div class="stats__card">
-            <span class="stats__number" data-count="847">0</span>
-            <span class="stats__label">дни заедно</span>
+            <span class="stats__number" id="statsTogether">0</span>
+            <span class="stats__label" id="statsTogetherLabel">заедно</span>
           </div>
         </article>
         <article class="stats__item reveal">
@@ -402,7 +439,7 @@
       <p class="footer__text">Създадено с ♥ като дигитален подарък</p>
       <p class="footer__brand">WebGift</p>
       <p class="footer__variant">
-        <a href="web-gift-him/" class="footer__link">Версия за него →</a>
+        <a href="web-gift-him/index.html" class="footer__link">Версия за него →</a>
       </p>
     </footer>
 
@@ -413,23 +450,25 @@
     <div class="letter-overlay__bg" aria-hidden="true"></div>
     <article class="letter-overlay__paper">
       <button class="letter-overlay__close" type="button" aria-label="Затвори писмото">&times;</button>
-      <div class="letter-overlay__frame" aria-hidden="true"></div>
-      <header class="letter-overlay__header">
-        <span class="letter-overlay__tag">Лично писмо</span>
-        <div class="letter-overlay__ornament" aria-hidden="true">♥</div>
-      </header>
-      <p class="letter-overlay__greeting">Скъпа Мария,</p>
-      <div class="letter-overlay__body">
-        <p>Написах това писмо с мисъл за всеки момент, в който си била до мен. За всяка усмивка, за всяка тиха вечер, за всяко „обичам те", което казахме без думи.</p>
-        <p>Ти си моето най-красиво приключение. Не перфектно — истинско. И точно затова те обичам.</p>
-        <p>Този подарък е мой жест към теб — дигитален, но сърдечен. За да пазиш нашите спомени там, където винаги можеш да ги отвориш.</p>
-        <p>Благодаря ти, че си част от моя свят. С теб всичко е по-светло, по-топло и по-истинско.</p>
+      <div class="letter-overlay__inner">
+        <div class="letter-overlay__frame" aria-hidden="true"></div>
+        <header class="letter-overlay__header">
+          <span class="letter-overlay__tag">Лично писмо</span>
+          <div class="letter-overlay__ornament" aria-hidden="true">♥</div>
+        </header>
+        <p class="letter-overlay__greeting">Скъпа Мария,</p>
+        <div class="letter-overlay__body">
+          <p>Написах това писмо с мисъл за всеки момент, в който си била до мен. За всяка усмивка, за всяка тиха вечер, за всяко „обичам те", което казахме без думи.</p>
+          <p>Ти си моето най-красиво приключение. Не перфектно — истинско. И точно затова те обичам.</p>
+          <p>Този подарък е мой жест към теб — дигитален, но сърдечен. За да пазиш нашите спомени там, където винаги можеш да ги отвориш.</p>
+          <p>Благодаря ти, че си част от моя свят. С теб всичко е по-светло, по-топло и по-истинско.</p>
+        </div>
+        <footer class="letter-overlay__footer">
+          <p class="letter-overlay__sign">Завинаги твой,</p>
+          <p class="letter-overlay__name">Алекс</p>
+          <span class="letter-overlay__divider" aria-hidden="true"></span>
+        </footer>
       </div>
-      <footer class="letter-overlay__footer">
-        <p class="letter-overlay__sign">Завинаги твой,</p>
-        <p class="letter-overlay__name">Алекс</p>
-        <span class="letter-overlay__divider" aria-hidden="true"></span>
-      </footer>
     </article>
   </div>
 

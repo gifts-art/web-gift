@@ -22,10 +22,16 @@
 
   window.addEventListener('scroll', () => {
     isUserScrolling = true;
+    document.body.classList.add('is-scrolling');
     clearTimeout(scrollIdleTimer);
     scrollIdleTimer = setTimeout(() => {
       isUserScrolling = false;
-    }, 120);
+      document.body.classList.remove('is-scrolling');
+      if (ambientResumePending && ambientRunning) {
+        ambientResumePending = false;
+        requestAnimationFrame(ambientDrawFrame);
+      }
+    }, 150);
   }, { passive: true });
 
   /* ─── Preloader ─── */
@@ -36,7 +42,7 @@
 
   /* ─── Intro Particles ─── */
   const introParticles = $('#introParticles');
-  if (introParticles) {
+  if (introParticles && !isMobile) {
     for (let i = 0; i < 24; i++) {
       const p = document.createElement('span');
       p.className = 'intro__particle';
@@ -66,7 +72,7 @@
     const colors = BRAND_COLORS;
 
     burstParticles = [];
-    const count = isMobile ? 80 : 140;
+    const count = isMobile ? 32 : 140;
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 6 + Math.random() * 14;
@@ -190,6 +196,8 @@
   let ambientCtx;
   let ambientParticles = [];
   let ambientRunning = false;
+  let ambientDrawFrame = null;
+  let ambientResumePending = false;
 
   function initAmbient() {
     if (!ambientCanvas || ambientRunning || isMobile) return;
@@ -219,10 +227,12 @@
 
     function draw() {
       if (!ambientCtx || !giftOpened) return;
+      ambientDrawFrame = draw;
       if (isUserScrolling) {
-        requestAnimationFrame(draw);
+        ambientResumePending = true;
         return;
       }
+      ambientResumePending = false;
       ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
       ambientParticles.forEach(p => {
@@ -331,7 +341,6 @@
     playOpenBurst();
     intro.classList.add('closing');
     main.classList.remove('hidden');
-    nav?.classList.add('visible');
 
     requestAnimationFrame(() => {
       main.classList.add('is-active');
@@ -340,14 +349,17 @@
     setTimeout(() => {
       intro.style.display = 'none';
       document.body.style.overflow = '';
+      nav?.classList.add('visible');
       revealHero();
       initReveal();
       initCounters();
       initTogetherCounter();
-      initAmbient();
-      initHeroSparkles();
+      if (!isMobile) {
+        initAmbient();
+        initHeroSparkles();
+        initTimelineGlow();
+      }
       initGalleryTilt();
-      initTimelineGlow();
       initQuiz();
       initCatchGame();
       initScratch();
@@ -410,10 +422,94 @@
     );
 
     $$('[data-count]').forEach(c => counterObserver.observe(c));
+    initRelationshipStatCounter();
   }
 
   /* ─── Together Live Counter ─── */
   const TOGETHER_SINCE = '2022-03-14T00:00:00';
+
+  function getSinceDate() {
+    const section = $('#together');
+    const sinceEl = section?.dataset.since || TOGETHER_SINCE;
+    const since = new Date(sinceEl);
+    return Number.isNaN(since.getTime()) ? null : since;
+  }
+
+  function getRelationshipStat(since, now = new Date()) {
+    const diff = Math.max(0, now.getTime() - since.getTime());
+    const totalDays = Math.floor(diff / 86400000);
+
+    let years = now.getFullYear() - since.getFullYear();
+    let months = now.getMonth() - since.getMonth();
+    if (now.getDate() < since.getDate()) months--;
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    if (years >= 1) {
+      return {
+        value: years,
+        label: years === 1 ? 'година заедно' : 'години заедно'
+      };
+    }
+
+    const totalMonths = (now.getFullYear() - since.getFullYear()) * 12
+      + (now.getMonth() - since.getMonth())
+      - (now.getDate() < since.getDate() ? 1 : 0);
+
+    if (totalMonths >= 1) {
+      return {
+        value: totalMonths,
+        label: totalMonths === 1 ? 'месец заедно' : 'месеца заедно'
+      };
+    }
+
+    if (totalDays >= 1) {
+      const weeks = Math.max(1, Math.ceil(totalDays / 7));
+      return {
+        value: weeks,
+        label: weeks === 1 ? 'седмица заедно' : 'седмици заедно'
+      };
+    }
+
+    return { value: 0, label: 'дни заедно' };
+  }
+
+  function initRelationshipStatCounter() {
+    const el = $('#statsTogether');
+    const labelEl = $('#statsTogetherLabel');
+    const since = getSinceDate();
+    if (!el || !labelEl || !since) return;
+
+    const statObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          const { value, label } = getRelationshipStat(since);
+          labelEl.textContent = label;
+
+          const duration = 2200;
+          const start = performance.now();
+
+          function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 4);
+            el.textContent = Math.floor(eased * value).toLocaleString('bg-BG');
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = value.toLocaleString('bg-BG');
+          }
+
+          requestAnimationFrame(tick);
+          statObserver.unobserve(el);
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    statObserver.observe(el);
+  }
 
   function getTogetherDuration(since, now = new Date()) {
     const diff = Math.max(0, now.getTime() - since.getTime());
@@ -442,9 +538,8 @@
     const section = $('#together');
     if (!section) return;
 
-    const sinceEl = section.dataset.since || TOGETHER_SINCE;
-    const since = new Date(sinceEl);
-    if (Number.isNaN(since.getTime())) return;
+    const since = getSinceDate();
+    if (!since) return;
 
     const els = {
       days: $('#togetherDays'),
@@ -470,7 +565,7 @@
       if (togetherTimer || !isVisible || document.hidden) return;
       render();
       if (reduceMotion) return;
-      togetherTimer = setInterval(render, 1000);
+      togetherTimer = setInterval(render, isMobile ? 5000 : 1000);
     }
 
     function stopTicker() {
@@ -501,6 +596,7 @@
 
   /* ─── Timeline Glow Progress ─── */
   function initTimelineGlow() {
+    if (isMobile) return;
     const track = $('.timeline__track');
     const glow = $('.timeline__line-glow');
     if (!track || !glow) return;
@@ -633,7 +729,8 @@
     const cy = window.innerHeight / 2;
 
     confettiParticles = [];
-    for (let i = 0; i < 200; i++) {
+    const confettiCount = isMobile ? 50 : 200;
+    for (let i = 0; i < confettiCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 5 + Math.random() * 12;
       confettiParticles.push({
@@ -716,7 +813,10 @@
         }
       });
     },
-    { threshold: 0.35 }
+    {
+      threshold: isMobile ? 0.15 : 0.35,
+      rootMargin: isMobile ? '-10% 0px -55% 0px' : '0px'
+    }
   );
 
   sections.forEach(s => sectionObserver.observe(s));
@@ -960,7 +1060,7 @@
       const rect = card.getBoundingClientRect();
       if (rect.width < 10 || rect.height < 10) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
       logicalW = rect.width;
       logicalH = rect.height;
 
@@ -1001,13 +1101,13 @@
       ctx.fill();
 
       scratchChecks++;
-      if (scratchChecks % 6 === 0) checkReveal();
+      if (scratchChecks % (isMobile ? 10 : 6) === 0) checkReveal();
     }
 
     function checkReveal() {
       if (cleared) return;
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const step = 16;
+      const step = isMobile ? 32 : 16;
       let transparent = 0;
       let total = 0;
 
