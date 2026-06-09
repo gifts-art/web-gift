@@ -1361,11 +1361,13 @@ button {
   top: 8px;
   width: 2px;
   margin-left: -1px;
-  height: 0;
+  height: calc(100% - 16px);
+  transform: scaleY(0);
+  transform-origin: top center;
   background: linear-gradient(180deg, var(--accent-hot), var(--violet), var(--gold));
   border-radius: 2px;
   box-shadow: 0 0 12px rgba(255, 77, 141, 0.5);
-  transition: height 0.1s linear;
+  will-change: transform;
 }
 
 .timeline__event {
@@ -2460,6 +2462,67 @@ button {
 
 .section-header .reveal:nth-child(2) { transition-delay: 0.1s; }
 .section-header .reveal:nth-child(3) { transition-delay: 0.2s; }
+
+/* ─── Mobile scroll performance ─── */
+@media (max-width: 767px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  .ambient__canvas,
+  .hero__sparkles {
+    display: none !important;
+  }
+
+  .ambient__aurora {
+    animation: none;
+    opacity: 0.65;
+  }
+
+  .ambient__orb {
+    mix-blend-mode: normal;
+    filter: blur(48px);
+    opacity: 0.45;
+  }
+
+  .nav__bar,
+  .stats__card,
+  .game-panel,
+  .hero__eyebrow {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav__bar {
+    background: rgba(10, 6, 18, 0.98);
+  }
+
+  .stats__card {
+    background: rgba(14, 9, 24, 0.92);
+  }
+
+  .game-panel {
+    background: rgba(14, 9, 24, 0.92);
+  }
+
+  .reveal {
+    transform: none;
+    transition: opacity 0.6s var(--ease-out);
+  }
+
+  .reveal.visible {
+    transform: none;
+  }
+
+  .gallery__item {
+    transform-style: flat;
+    transition: box-shadow 0.4s, border-color 0.4s;
+  }
+}
 
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {

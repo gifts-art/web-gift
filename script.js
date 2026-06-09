@@ -7,7 +7,18 @@
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   let giftOpened = false;
-  const isMobile = window.innerWidth < 768;
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  let scrollPerfTicking = false;
+  let isUserScrolling = false;
+  let scrollIdleTimer;
+
+  window.addEventListener('scroll', () => {
+    isUserScrolling = true;
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(() => {
+      isUserScrolling = false;
+    }, 120);
+  }, { passive: true });
 
   /* ─── Preloader ─── */
   const preloader = $('#preloader');
@@ -109,7 +120,7 @@
   let sparklesRunning = false;
 
   function initHeroSparkles() {
-    if (!heroSparkles || sparklesRunning) return;
+    if (!heroSparkles || sparklesRunning || isMobile) return;
     sparklesRunning = true;
 
     const resize = () => {
@@ -173,7 +184,7 @@
   let ambientRunning = false;
 
   function initAmbient() {
-    if (!ambientCanvas || ambientRunning) return;
+    if (!ambientCanvas || ambientRunning || isMobile) return;
     ambientRunning = true;
 
     const resize = () => {
@@ -200,6 +211,10 @@
 
     function draw() {
       if (!ambientCtx || !giftOpened) return;
+      if (isUserScrolling) {
+        requestAnimationFrame(draw);
+        return;
+      }
       ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
 
       ambientParticles.forEach(p => {
@@ -388,27 +403,32 @@
     $$('[data-count]').forEach(c => counterObserver.observe(c));
   }
 
-  /* ─── Hero Parallax + Mouse ─── */
-  const heroEl = $('.hero');
-  let scrollTicking = false;
+  /* ─── Timeline Glow Progress ─── */
+  function initTimelineGlow() {
+    const track = $('.timeline__track');
+    const glow = $('.timeline__line-glow');
+    if (!track || !glow) return;
 
-  window.addEventListener('scroll', () => {
-    if (!giftOpened || !heroEl) return;
-    if (scrollTicking) return;
-    scrollTicking = true;
+    function update() {
+      const rect = track.getBoundingClientRect();
+      const winH = window.innerHeight;
+      const start = winH * 0.3;
+      const progress = Math.min(Math.max((start - rect.top) / (rect.height + start), 0), 1);
+      glow.style.transform = `scaleY(${progress})`;
+    }
 
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      const heroH = heroEl.offsetHeight || window.innerHeight;
-      if (scrollY < heroH) {
-        heroEl.style.setProperty('--hero-parallax', `${scrollY * 0.25}px`);
-      }
-      scrollTicking = false;
-    });
-  }, { passive: true });
+    function onScroll() {
+      if (scrollPerfTicking) return;
+      scrollPerfTicking = true;
+      requestAnimationFrame(() => {
+        update();
+        scrollPerfTicking = false;
+      });
+    }
 
-
-  /* ─── Gallery 3D Tilt ─── */
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+  }
   function initGalleryTilt() {
     const items = $$('[data-tilt]');
 
@@ -438,25 +458,7 @@
     });
   }
 
-  /* ─── Timeline Glow Progress ─── */
-  function initTimelineGlow() {
-    const track = $('.timeline__track');
-    const glow = $('.timeline__line-glow');
-    if (!track || !glow) return;
-
-    function update() {
-      const rect = track.getBoundingClientRect();
-      const winH = window.innerHeight;
-      const start = winH * 0.3;
-      const progress = Math.min(Math.max((start - rect.top) / (rect.height + start), 0), 1);
-      glow.style.height = `${progress * rect.height}px`;
-    }
-
-    window.addEventListener('scroll', update, { passive: true });
-    update();
-  }
-
-  /* ─── Lightbox ─── */
+  /* ─── Gallery 3D Tilt ─── */
   const lightbox = $('#lightbox');
   const lightboxImg = $('#lightboxImg');
   const lightboxCaption = $('#lightboxCaption');
