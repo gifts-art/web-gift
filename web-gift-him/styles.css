@@ -992,18 +992,21 @@ button {
   font-weight: 600;
   color: var(--accent-hot);
   text-shadow: 0 0 40px rgba(28, 105, 212, 0.35);
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
-  .hero__title-line--accent {
+  .hero.revealed .hero__title-line--accent {
     background: linear-gradient(90deg, #1C69D4, #C0C4C8, #E2E4E8, #0066B1, #1C69D4);
     background-size: 300% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    animation: gradientFlow 4s linear infinite;
     text-shadow: none;
+    animation:
+      heroLineIn 1.1s var(--ease-out) 0.4s forwards,
+      gradientFlow 4s linear 1.5s infinite;
   }
 }
 
@@ -2801,10 +2804,13 @@ button {
     overscroll-behavior-y: none;
   }
 
-  /* Canvas = тежко — само те остават изключени */
-  .ambient__canvas,
+  /* Canvas — по-лек на mobile, но видим */
   .hero__sparkles {
-    display: none !important;
+    opacity: 0.92;
+  }
+
+  .ambient__canvas {
+    opacity: 0.6;
   }
 
   /* Blur фонове — по-леки, но живи */

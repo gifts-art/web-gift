@@ -31,6 +31,10 @@
         ambientResumePending = false;
         requestAnimationFrame(ambientDrawFrame);
       }
+      if (sparklesResumePending && sparklesRunning && sparklesDrawFrame) {
+        sparklesResumePending = false;
+        requestAnimationFrame(sparklesDrawFrame);
+      }
     }, 150);
   }, { passive: true });
 
@@ -133,24 +137,27 @@
   let sparkleCtx;
   let sparkles = [];
   let sparklesRunning = false;
+  let sparklesDrawFrame = null;
+  let sparklesResumePending = false;
+  let sparklesHeroVisible = true;
 
   function initHeroSparkles() {
-    if (!heroSparkles || sparklesRunning || isMobile) return;
+    if (!heroSparkles || sparklesRunning) return;
     sparklesRunning = true;
 
     const resize = () => {
       const rect = heroSparkles.parentElement.getBoundingClientRect();
-      heroSparkles.width = rect.width;
-      heroSparkles.height = rect.height;
+      heroSparkles.width = Math.max(1, Math.floor(rect.width));
+      heroSparkles.height = Math.max(1, Math.floor(rect.height));
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const count = isMobile ? 40 : 70;
+    const count = isMobile ? 32 : 70;
     sparkles = Array.from({ length: count }, () => ({
       x: Math.random() * heroSparkles.width,
       y: Math.random() * heroSparkles.height,
-      r: Math.random() * 2 + 0.5,
+      r: Math.random() * (isMobile ? 1.6 : 2) + 0.5,
       phase: Math.random() * Math.PI * 2,
       speed: 0.02 + Math.random() * 0.03,
       drift: (Math.random() - 0.5) * 0.3
@@ -160,11 +167,19 @@
 
     function drawSparkles() {
       if (!giftOpened || !sparkleCtx) return;
+      sparklesDrawFrame = drawSparkles;
+
+      if (isUserScrolling || document.hidden || !sparklesHeroVisible) {
+        sparklesResumePending = true;
+        return;
+      }
+      sparklesResumePending = false;
+
       sparkleCtx.clearRect(0, 0, heroSparkles.width, heroSparkles.height);
 
       sparkles.forEach(s => {
         s.phase += s.speed;
-        s.y -= 0.15;
+        s.y -= isMobile ? 0.1 : 0.15;
         s.x += s.drift;
         const alpha = (Math.sin(s.phase) + 1) / 2 * 0.7 + 0.1;
 
@@ -178,16 +193,40 @@
         sparkleCtx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         sparkleCtx.fill();
 
-        if (s.r > 1.2) {
+        if (!isMobile && s.r > 1.2) {
           sparkleCtx.beginPath();
           sparkleCtx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
           sparkleCtx.fillStyle = `rgba(28, 105, 212, ${alpha * 0.25})`;
+          sparkleCtx.fill();
+        } else if (isMobile && s.r > 1.2) {
+          sparkleCtx.beginPath();
+          sparkleCtx.arc(s.x, s.y, s.r * 2, 0, Math.PI * 2);
+          sparkleCtx.fillStyle = `rgba(77, 163, 224, ${alpha * 0.2})`;
           sparkleCtx.fill();
         }
       });
 
       requestAnimationFrame(drawSparkles);
     }
+
+    const heroEl = $('.hero');
+    if (heroEl) {
+      new IntersectionObserver(
+        ([entry]) => {
+          sparklesHeroVisible = entry.isIntersecting;
+          if (sparklesHeroVisible && sparklesResumePending) {
+            requestAnimationFrame(drawSparkles);
+          }
+        },
+        { threshold: 0.08 }
+      ).observe(heroEl);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && sparklesResumePending && sparklesHeroVisible) {
+        requestAnimationFrame(drawSparkles);
+      }
+    });
 
     drawSparkles();
   }
@@ -201,7 +240,7 @@
   let ambientResumePending = false;
 
   function initAmbient() {
-    if (!ambientCanvas || ambientRunning || isMobile) return;
+    if (!ambientCanvas || ambientRunning) return;
     ambientRunning = true;
 
     const resize = () => {
@@ -211,7 +250,7 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const count = isMobile ? 50 : 90;
+    const count = isMobile ? 36 : 90;
     const colors = BRAND_RGBA;
 
     ambientParticles = Array.from({ length: count }, () => ({
@@ -229,7 +268,7 @@
     function draw() {
       if (!ambientCtx || !giftOpened) return;
       ambientDrawFrame = draw;
-      if (isUserScrolling) {
+      if (isUserScrolling || document.hidden) {
         ambientResumePending = true;
         return;
       }
@@ -355,9 +394,9 @@
       initReveal();
       initCounters();
       initTogetherCounter();
+      initHeroSparkles();
+      initAmbient();
       if (!isMobile) {
-        initAmbient();
-        initHeroSparkles();
         initTimelineGlow();
       }
       initGalleryTilt();
