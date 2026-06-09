@@ -2722,54 +2722,71 @@ button {
     overscroll-behavior-y: none;
   }
 
-  .ambient,
+  /* Canvas = тежко — само те остават изключени */
   .ambient__canvas,
-  .ambient__aurora,
-  .ambient__orb,
-  .ambient__grain,
-  .hero__sparkles,
-  .hero__mesh,
-  .hero__shimmer,
-  .hero__flare,
-  .hero__name-glow,
-  .hero__glow,
-  .gallery__shine {
+  .hero__sparkles {
     display: none !important;
   }
 
-  .intro__orb,
-  .intro__particle {
+  /* Blur фонове — по-леки, но живи */
+  .ambient__aurora {
+    filter: blur(42px);
+    opacity: 0.55;
+    animation-duration: 36s;
+  }
+
+  .ambient__orb {
+    filter: blur(36px);
+    opacity: 0.42;
+    mix-blend-mode: normal;
+    animation-duration: 16s;
+  }
+
+  .ambient__grain {
+    opacity: 0.04;
+  }
+
+  .intro__orb {
+    filter: blur(48px);
+  }
+
+  .hero__name-glow {
+    filter: blur(14px);
+    opacity: 0.55;
+  }
+
+  .hero__flare {
+    filter: blur(1px);
+    opacity: 0.5;
+  }
+
+  /* По време на scroll — пауза само на blur слоевете */
+  body.is-scrolling .ambient__aurora,
+  body.is-scrolling .ambient__orb,
+  body.is-scrolling .intro__orb {
+    animation-play-state: paused;
+  }
+
+  /* Галерия — без ефекти върху снимките */
+  .gallery__shine,
+  .gallery__item.visible .gallery__shine {
     display: none !important;
   }
 
-  .intro__brand-mark {
-    animation: none !important;
+  .gallery__item,
+  .gallery__item.visible {
+    transform: none !important;
+    transform-style: flat;
+    transition: box-shadow 0.35s, border-color 0.35s;
+    will-change: auto;
   }
 
-  .intro__brand-mark .bmw-logo {
-    animation: none !important;
+  .gallery__item:hover,
+  .gallery__item:focus-within {
+    transform: none !important;
   }
 
-  .hero__bar,
-  .hero__scroll-line,
-  .hero__eyebrow-dot,
-  .together__live-dot,
-  .envelope,
-  .envelope-stage__glow,
-  .envelope__seal,
-  .surprise__rings span,
-  .surprise__heart-pulse,
-  .surprise__stage,
-  .surprise__btn,
-  .envelope__cta-pulse {
-    animation: none !important;
-  }
-
-  .hero__title-line--accent {
-    animation: none !important;
-    background-size: 100% 100%;
-  }
-
+  /* Off-screen секции — по-лек scroll */
   .together,
   .stats,
   .memories,
@@ -2785,6 +2802,7 @@ button {
     contain: layout style;
   }
 
+  /* backdrop-filter = тежък на mobile */
   .nav__bar,
   .stats__card,
   .game-panel,
@@ -2823,6 +2841,7 @@ button {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   }
 
+  /* Reveal — без transform (scroll perf), opacity fade */
   .reveal,
   .timeline__event {
     transform: none !important;
@@ -2835,20 +2854,7 @@ button {
     transform: none !important;
   }
 
-  .gallery__item,
-  .gallery__item.visible {
-    transform: none !important;
-    transform-style: flat;
-    transition: box-shadow 0.35s, border-color 0.35s;
-    will-change: auto;
-  }
-
-  .gallery__item.visible .gallery__shine {
-    display: none;
-  }
-
   .timeline__line-glow {
-    transform: none !important;
     opacity: 0.35;
   }
 }

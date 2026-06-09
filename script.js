@@ -34,8 +34,9 @@
 
   /* ─── Intro Particles ─── */
   const introParticles = $('#introParticles');
-  if (introParticles && !isMobile) {
-    for (let i = 0; i < 24; i++) {
+  if (introParticles) {
+    const particleCount = isMobile ? 10 : 24;
+    for (let i = 0; i < particleCount; i++) {
       const p = document.createElement('span');
       p.className = 'intro__particle';
       p.style.left = `${Math.random() * 100}%`;
@@ -558,7 +559,7 @@
       if (togetherTimer || !isVisible || document.hidden) return;
       render();
       if (reduceMotion) return;
-      togetherTimer = setInterval(render, isMobile ? 5000 : 1000);
+      togetherTimer = setInterval(render, 1000);
     }
 
     function stopTicker() {
