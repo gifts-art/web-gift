@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Персонализиран дигитален подарък — създаден с любов за теб.">
-  <meta name="theme-color" content="#0a0612">
+  <meta name="description" content="Персонализиран дигитален подарък за него — създаден с любов.">
+  <meta name="theme-color" content="#000000">
   <title>За Теб · Дигитален Подарък</title>
+  <link rel="preload" href="images/bmw-logo.png" as="image" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -29,13 +30,8 @@
       <div class="intro__orb intro__orb--3"></div>
     </div>
     <div class="intro__content">
-      <div class="intro__gift-icon" aria-hidden="true">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="28" width="48" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
-          <path d="M32 28V60M8 36h48" stroke="currentColor" stroke-width="2"/>
-          <path d="M32 28c-8-12-20-8-12 0 8-8 20-4 12 0z" stroke="currentColor" stroke-width="2" fill="none"/>
-          <path d="M32 28c8-12 20-8 12 0-8-8-20-4-12 0z" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
+      <div class="intro__brand-mark" aria-hidden="true">
+        <img src="images/bmw-logo.png" alt="" class="bmw-logo" width="72" height="72" loading="eager" decoding="async">
       </div>
       <p class="intro__label">Дигитален подарък</p>
       <h1 class="intro__title">Има нещо<br><em>само за теб</em></h1>
@@ -53,7 +49,10 @@
   <!-- Floating Nav (outside main for correct mobile overlay stacking) -->
   <nav class="nav" id="siteNav" aria-label="Навигация">
     <div class="nav__bar">
-      <a href="#hero" class="nav__logo">За Теб</a>
+      <a href="#hero" class="nav__logo">
+        <img src="images/bmw-logo.png" alt="" class="bmw-logo bmw-logo--nav" width="28" height="28" loading="lazy" decoding="async">
+        <span>За Теб</span>
+      </a>
       <button id="navToggle" class="nav__toggle" type="button" aria-label="Меню" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -109,7 +108,7 @@
         </h1>
         <div class="hero__name-wrap reveal">
           <span class="hero__name-glow" aria-hidden="true"></span>
-          <p class="hero__name">Мария</p>
+          <p class="hero__name">Алекс</p>
         </div>
         <p class="hero__message reveal">Всеки момент с теб е подарък.<br>Този е само за теб.</p>
         <a href="#memories" class="hero__scroll reveal" aria-label="Продължи надолу">
@@ -119,6 +118,43 @@
       </div>
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="hero__flare" aria-hidden="true"></div>
+    </section>
+
+    <!-- Together Live Counter -->
+    <section class="together" id="together" aria-label="Време заедно" data-since="2022-03-14T00:00:00">
+      <div class="together__panel reveal">
+        <div class="together__scan" aria-hidden="true"></div>
+        <header class="together__head">
+          <span class="together__live">
+            <span class="together__live-dot" aria-hidden="true"></span>
+            Live
+          </span>
+          <p class="together__title">Заедно от</p>
+          <time class="together__since" id="togetherSince" datetime="2022-03-14">14.03.2022</time>
+        </header>
+        <div class="together__grid" role="group" aria-label="Отброяване на време заедно">
+          <div class="together__unit">
+            <span class="together__value" id="togetherDays" data-unit="days">000</span>
+            <span class="together__label">дни</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherHours" data-unit="hours">00</span>
+            <span class="together__label">часа</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherMinutes" data-unit="minutes">00</span>
+            <span class="together__label">минути</span>
+          </div>
+          <div class="together__divider" aria-hidden="true"></div>
+          <div class="together__unit">
+            <span class="together__value" id="togetherSeconds" data-unit="seconds">00</span>
+            <span class="together__label">секунди</span>
+          </div>
+        </div>
+        <p class="together__sub">Всяка секунда с теб си струва.</p>
+      </div>
     </section>
 
     <!-- Stats Strip -->
@@ -328,7 +364,7 @@
             <div class="scratch__prize">
               <span class="scratch__prize-label">Тайният подарък</span>
               <p class="scratch__prize-text">Уикенд на море<br>само за нас двамата 🌊</p>
-              <span class="scratch__prize-from">— Алекс</span>
+              <span class="scratch__prize-from">— Мария</span>
             </div>
             <canvas id="scratchCanvas" class="scratch__canvas" aria-label="Изтрий с пръст или мишка"></canvas>
             <p class="scratch__hint">👆 Изтрий с пръст, за да видиш изненадата</p>
@@ -401,9 +437,6 @@
     <footer class="footer">
       <p class="footer__text">Създадено с ♥ като дигитален подарък</p>
       <p class="footer__brand">WebGift</p>
-      <p class="footer__variant">
-        <a href="web-gift-him/" class="footer__link">Версия за него →</a>
-      </p>
     </footer>
 
   </main>
@@ -413,23 +446,25 @@
     <div class="letter-overlay__bg" aria-hidden="true"></div>
     <article class="letter-overlay__paper">
       <button class="letter-overlay__close" type="button" aria-label="Затвори писмото">&times;</button>
-      <div class="letter-overlay__frame" aria-hidden="true"></div>
-      <header class="letter-overlay__header">
-        <span class="letter-overlay__tag">Лично писмо</span>
-        <div class="letter-overlay__ornament" aria-hidden="true">♥</div>
-      </header>
-      <p class="letter-overlay__greeting">Скъпа Мария,</p>
-      <div class="letter-overlay__body">
-        <p>Написах това писмо с мисъл за всеки момент, в който си била до мен. За всяка усмивка, за всяка тиха вечер, за всяко „обичам те", което казахме без думи.</p>
-        <p>Ти си моето най-красиво приключение. Не перфектно — истинско. И точно затова те обичам.</p>
-        <p>Този подарък е мой жест към теб — дигитален, но сърдечен. За да пазиш нашите спомени там, където винаги можеш да ги отвориш.</p>
-        <p>Благодаря ти, че си част от моя свят. С теб всичко е по-светло, по-топло и по-истинско.</p>
+      <div class="letter-overlay__inner">
+        <div class="letter-overlay__frame" aria-hidden="true"></div>
+        <header class="letter-overlay__header">
+          <span class="letter-overlay__tag">Лично писмо</span>
+          <div class="letter-overlay__ornament" aria-hidden="true">♥</div>
+        </header>
+        <p class="letter-overlay__greeting">Скъпи Алекс,</p>
+        <div class="letter-overlay__body">
+          <p>Написах това писмо с мисъл за всеки момент, в който си бил до мен. За всяка усмивка, за всяка тиха вечер, за всяко „обичам те", което казахме без думи.</p>
+          <p>Ти си моето най-красиво приключение. Не перфектен — истински. И точно затова те обичам.</p>
+          <p>Този подарък е мой жест към теб — дигитален, но сърдечен. За да пазиш нашите спомени там, където винаги можеш да ги отвориш.</p>
+          <p>Благодаря ти, че си част от моя свят. С теб всичко е по-светло, по-топло и по-истинско.</p>
+        </div>
+        <footer class="letter-overlay__footer">
+          <p class="letter-overlay__sign">Завинаги твоя,</p>
+          <p class="letter-overlay__name">Мария</p>
+          <span class="letter-overlay__divider" aria-hidden="true"></span>
+        </footer>
       </div>
-      <footer class="letter-overlay__footer">
-        <p class="letter-overlay__sign">Завинаги твой,</p>
-        <p class="letter-overlay__name">Алекс</p>
-        <span class="letter-overlay__divider" aria-hidden="true"></span>
-      </footer>
     </article>
   </div>
 
